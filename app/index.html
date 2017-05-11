@@ -1,20 +1,23 @@
-<html lang="en" data-ng-app='ShoeCalendarApp' class='no-js'>
+<!-- ng-app is an example of a directive; anything with "ng" in front is a built-in angular directive. If you are making custom directives, do not prefix them with "ng" -->
+<html lang="en" ng-app="myApp" class='no-js'>
 
 <head>
     <title>AngularJS - Demo App</title>
     <meta name='viewport' content='width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes'>
-    <!-- <link rel="stylesheet" href="vendor/angular-material.css"> -->
+
+    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
 </head>
 
-<body ng-cloak>
+<body ng-cloak ng-controller="DemoController">
 
     <!--[if lt IE 10]>
 		<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/" target="_blank">upgrade your browser</a> to improve your experience.</p>
 	<![endif]-->
 
     <!-- <div data-ui-view></div> -->
+
 
     <header>
       <nav>
@@ -24,8 +27,105 @@
     </header>
 
     <div>
-      <h1>Hello World!</h>
+      <h1>Hello World!</h1>
+
+      <ui-view></ui-view>
     </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js"></script>
+    <!-- Angular Material Library -->
+    <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.js"></script>
+
+    <!-- UI Router -->
+    <script src="//unpkg.com/angular-ui-router/release/angular-ui-router.min.js"></script>
+
+    <script>
+      var demoApp = angular.module("myApp", ['ui.router']);
+
+      function DemoController($scope, demoFactory) {
+
+        $scope.customers = demoFactory.getCustomers();
+
+        $scope.addCustomer = function() {
+          $scope.customers.push({ name: $scope.newcustomer.name, city: $scope.newcustomer.city });
+        }
+      };
+
+      demoApp.controller('DemoController', DemoController);
+
+      demoApp.config(function($stateProvider) {
+        $stateProvider
+          .state('default', {
+            url:'/',
+            templateUrl: 'view1.html',
+            controller: 'DemoController'
+            // controllerAs: 'core'
+          })
+          .state('edit', {
+            url: '/edit',
+            templateUrl: 'view2.html',
+            controller: 'DemoController'
+          })
+      });
+
+      demoApp.factory('demoFactory', function() {
+        var factory = {};
+        var customers = [
+          {
+            name: 'testname',
+            city: 'city1'
+          },
+          {
+            name: 'name2',
+            city: 'city2'
+          },
+          {
+            name: 'hey3',
+            city: 'city3'
+          },
+          {
+            name: 'hi4',
+            city: 'city4'
+          }
+        ];
+        factory.getCustomers = function() {
+          return customers;
+        };
+        return factory;
+      });
+
+      // demoApp.config(function($stateProvider) {
+      //   $stateProvider
+      //     .state('create', {
+      //       url: '/create',
+      //       templateUrl: 'view1.html',
+      //       controller: 'DemoController'
+      //       // controllerAs: 'core'
+      //     })
+      //     .state('edit', {
+      //       url: '/edit',
+      //       template: '<div>hey</div>',
+      //       controller: 'DemoController'
+      //     })
+      // });
+
+      //Here is where your module is defined and your dependencies are injected
+      //var app = angular.module('demoApp', ['ngMaterial', 'ui.router']);
+
+      // app.config(['$routeProvider', function ($routeProvider) {
+      //
+      //   $routeProvider.when('/', {
+      //       controller: 'customersController',
+      //       templateUrl: '/app/views/customers.html'
+      //   })
+      //   .otherwise({ redirectTo: '/' });
+      //
+      // }]);
+    </script>
 
 </body>
 

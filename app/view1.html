@@ -1,0 +1,7 @@
+<input type="text" ng-model="newcustomer.name"></input>
+<input type="text" ng-model="newcustomer.city"></input>
+<button ng-click="addCustomer()">Add Customer</button>
+
+<ul ng-repeat="customer in customers | filter: name">
+  <li> {{ customer.name }} {{ customer.city }} </li>
+</ul>
